@@ -1,0 +1,17 @@
+There were a number of contests where participants each made multiple attempts.  The attempt with the highest score is the only one considered.  
+Write a query to list the contestants ranked in the top 3 for each contest.  If multiple contestants have the same score in a contest, they are at the same rank.
+
+Report event_id, rank 1 name(s), rank 2 name(s), rank 3 name(s).  Order the contests by event_id. Names that share a rank should be ordered alphabetically and 
+separated by a comma.
+
+Order the report by event_id.
+
+SELECT 
+  event_id, 
+    GROUP_CONCAT(IF(ranking = 1, participant_name, NULL) ORDER BY participant_name ASC SEPARATOR ',') AS first,
+      GROUP_CONCAT(IF(ranking = 2, participant_name, NULL) ORDER BY participant_name ASC SEPARATOR ',') AS second,
+        GROUP_CONCAT(IF(ranking = 3, participant_name, NULL) ORDER BY participant_name ASC SEPARATOR ',') AS third
+…                              ) AS rankings
+                              WHERE ranking <= 3
+                              GROUP BY event_id
+                              ORDER BY event_id ASC;
